@@ -22,9 +22,9 @@ resource "aws_security_group" "k8s_nodes_sg" {
   vpc_id = module.network.vpc_id
 
   ingress {
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
     security_groups = [aws_security_group.bastion_sg.id]
   }
 
