@@ -71,6 +71,7 @@ module "bastion" {
   bastion_ssh_cidr  = var.bastion_ssh_cidr
   bastion_sg_id     = aws_security_group.bastion_sg.id
   master_hosts      = data.aws_instances.masters.private_ips
+  master_hosts_first  = data.aws_instances.masters.private_ips[0]
   worker_hosts      = data.aws_instances.workers.private_ips
   key_name          = aws_key_pair.k8s_key.key_name
   ssh_private_key   = tls_private_key.k8s_ssh.private_key_pem

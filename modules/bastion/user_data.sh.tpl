@@ -60,4 +60,12 @@ kube_control_plane
 kube_node
 EOF
 
+ansible-playbook -i inventory/mycluster/inventory.ini cluster.yml --become
+until scp -o StrictHostKeyChecking=no ubuntu@$MASTER_IP:/etc/kubernetes/admin.conf /home/$SSH_USER/.kube/config; do
+    echo "Kubernetes not ready yet... retrying in 30s"
+    sleep 30
+done
+
+chown $SSH_USER:$SSH_USER /home/$SSH_USER/.kube/config
+
 chown -R ubuntu:ubuntu /home/ubuntu/kubespray
