@@ -7,7 +7,7 @@ variable "public_subnet_ids" {
 variable "master_hosts" {
   type = list(string)
 }
-variable "master_host_first" {
+variable "master_hosts_first" {
   type = string
 }
 variable "worker_hosts" {

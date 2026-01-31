@@ -8,7 +8,7 @@ resource "aws_instance" "bastion" {
 
   user_data = templatefile("${path.module}/user_data.sh.tpl", {
     master_hosts = var.master_hosts
-    master_host_first = var.master_host_first
+    master_hosts_first = var.master_hosts_first
     worker_hosts = var.worker_hosts
     private_key  = var.ssh_private_key
   })
