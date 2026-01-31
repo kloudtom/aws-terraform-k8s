@@ -64,11 +64,13 @@ kube_node
 EOF
 chown -R ubuntu:ubuntu /home/ubuntu/kubespray
 su - ubuntu -c "cd ~/kubespray;source myvirtualpythonenv/bin/activate;ansible-playbook -i inventory/mycluster/inventory.ini cluster.yml --become"
-until scp -o StrictHostKeyChecking=no ubuntu@${master_hosts_first}:/etc/kubernetes/admin.conf /home/$SSH_USER/.kube/config; do
+until su - ubuntu -c "ssh ubuntu@10.0.101.224 'mkdir -p /home/ubuntu/.kube;sudo cp /etc/kubernetes/admin.conf /home/ubuntu/.kube/config;sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube'
+"; do
+    
     echo "Kubernetes not ready yet... retrying in 30s"
     sleep 30
 done
-
+scp -o StrictHostKeyChecking=no ubuntu@${master_hosts_first}:/home/${SSH_USER}/.kube/config /home/${SSH_USER}/.kube/config
 chown $SSH_USER:$SSH_USER /home/$SSH_USER/.kube/config
-
+sed -i "s/127.0.0.1/${master_hosts_first}/g" /home/$SSH_USER/.kube/config
 chown -R ubuntu:ubuntu /home/ubuntu/kubespray
